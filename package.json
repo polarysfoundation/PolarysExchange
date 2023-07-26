@@ -1,0 +1,26 @@
+{
+  "name": "polarysexchange",
+  "version": "0.1.0",
+  "description": "Polarys Exchange, smart contract to can buy and sell token ERC721 and ERC1155",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js"
+  },
+  "author": {
+    "name": "Uranus"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.1",
+    "@truffle/hdwallet-provider": "^2.1.12",
+    "dotenv": "^16.3.1",
+    "truffle": "^5.10.2",
+    "web3": "^4.0.1"
+  },
+  "devDependencies": {
+    "app-module-path": "^2.2.0",
+    "truffle-plugin-stdjsonin": "github:mhrsalehi/truffle-plugin-stdjsonin",
+    "truffle-plugin-verify": "^0.6.4"
+  }
+}
