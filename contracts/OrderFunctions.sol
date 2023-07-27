@@ -63,6 +63,13 @@ contract OrderFunctions is
         bytes32 _nonceKey = generateNonce(orderId);
         uint256 nonce = getNonce(_nonceKey);
 
+        IERC721 tokenAddress = IERC721(_tokenAddress);
+
+        bool isApproved = tokenAddress.isApprovedForAll(
+            msg.sender,
+            address(this)
+        );
+
         require(
             _endTime <= 3,
             "Order Functions: End time can't be higher than 3"
@@ -74,8 +81,9 @@ contract OrderFunctions is
         );
 
         require(
-            IERC721(_tokenAddress).ownerOf(_tokenId) == msg.sender ||
-                IERC721(_tokenAddress).getApproved(_tokenId) == address(this),
+            tokenAddress.ownerOf(_tokenId) == msg.sender ||
+                tokenAddress.getApproved(_tokenId) == address(this) ||
+                isApproved,
             "Order Functions: Only owner or operator can create an Order"
         );
 

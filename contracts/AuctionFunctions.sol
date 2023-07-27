@@ -71,8 +71,13 @@ contract AuctionFunctions is
 
         IERC721 tokenAddress = IERC721(_tokenAddress);
         address tokenOwner = tokenAddress.ownerOf(_tokenId);
+        bool isApproved = tokenAddress.isApprovedForAll(
+            msg.sender,
+            address(this)
+        );
+
         require(
-            address(this) == tokenAddress.getApproved(_tokenId),
+            address(this) == tokenAddress.getApproved(_tokenId) || isApproved,
             "Auction Functions: Please approve to the caller"
         );
 
@@ -304,7 +309,11 @@ contract AuctionFunctions is
             );
 
             if (previousBidder != address(0)) {
-                executeERC20TransferBack(auction.tokenCurrency, previousBidder, previousBid);
+                executeERC20TransferBack(
+                    auction.tokenCurrency,
+                    previousBidder,
+                    previousBid
+                );
             }
 
             if (auction.endTime - block.timestamp <= 1200) {

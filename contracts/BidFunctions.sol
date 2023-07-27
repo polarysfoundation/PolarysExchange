@@ -261,6 +261,11 @@ contract BidFunctions is
         IERC721 tokenAddress = IERC721(bid.tokenAddress);
         bid.taker = taker;
 
+        bool isApproved = tokenAddress.isApprovedForAll(
+            msg.sender,
+            address(this)
+        );
+
         require(
             bid.status == 0,
             "Bid Functions: this bid has been accepted or cancelled"
@@ -278,7 +283,8 @@ contract BidFunctions is
         );
 
         require(
-            address(this) == tokenAddress.getApproved(bid.tokenId),
+            address(this) == tokenAddress.getApproved(bid.tokenId) ||
+                isApproved,
             "Bid Functions: You must approve to the caller"
         );
 
