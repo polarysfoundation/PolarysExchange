@@ -19,9 +19,8 @@ module.exports = {
       settings: {
         optimizer: {
           enabled: true,
-          runs: 1500,
+          runs: 200,
         },
-        viaIR: true, // Add viaIR to enable reading the IR (Intermediate Representation)
       },
     },
   },
