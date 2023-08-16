@@ -7,7 +7,7 @@ module.exports = {
       provider: function () {
         return new HDWalletProvider(
           `${process.env.MNEMONIC}`,
-          `https://sepolia.infura.io/v3/0ff6c5cf529441b2a2d55267dd771932`
+          `https://sepolia.infura.io/v3/${process.env.INFURA_API}`
         );
       },
       network_id: 11155111,
