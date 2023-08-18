@@ -28,18 +28,19 @@ contract PolarysExchange is
     mapping(bytes32 => uint256) private highestBid;
     mapping(bytes32 => uint256) private auctionExpirationTime;
 
+    /* TransferHelper Address */
     ITransferHelper public TransferHelper;
-    address public feeRecipient;
+    address public feeRecipient; //feeAddress
 
     string public constant EXCHANGE_NAME = "TAGWEB3";
-    string public constant VERSION = "1.0";
+    string public constant VERSION = "1.0.0";
 
     bool private safe;
     uint8 public feeRate;
 
     uint256 public ordersFilled;
 
-    constructor(address _admin) UpgradeableContract(address(this), _admin) {}
+    constructor() UpgradeableContract(address(this), msg.sender) {}
 
     modifier isSecure() {
         require(safe, "insecure call");
@@ -55,6 +56,7 @@ contract PolarysExchange is
     /* Order Events */
     event OrderCreated(
         address indexed seller,
+        address paymentToken,
         address collection,
         uint256 indexed tokenId,
         bytes32 orderHash,
@@ -66,6 +68,7 @@ contract PolarysExchange is
         address indexed buyer,
         address collection,
         uint256 indexed tokenId,
+        address paymentToken,
         uint256 price,
         bytes32 orderHash
     );
@@ -73,6 +76,7 @@ contract PolarysExchange is
     /* Auction Events */
     event AuctionCreated(
         address indexed seller,
+        address paymentToken,
         address collection,
         uint256 indexed tokenId,
         bytes32 orderHash,
@@ -81,6 +85,7 @@ contract PolarysExchange is
     event NewBidPlaced(
         address indexed seller,
         address indexed bidder,
+        address paymentToken,
         uint256 highestBid,
         address collection,
         uint256 indexed tokenId,
@@ -92,6 +97,7 @@ contract PolarysExchange is
         address indexed highestBidder,
         address collection,
         uint256 indexed tokenId,
+        address paymentToken,
         uint256 highestBid,
         bytes32 orderHash
     );
@@ -178,6 +184,7 @@ contract PolarysExchange is
 
             emit OrderCreated(
                 msg.sender,
+                order.paymentToken,
                 order.collection,
                 order.tokenId,
                 orderHash,
@@ -250,6 +257,7 @@ contract PolarysExchange is
             msg.sender,
             order.collection,
             order.tokenId,
+            order.paymentToken,
             order.price,
             orderHash
         );
@@ -332,6 +340,7 @@ contract PolarysExchange is
             msg.sender,
             order.collection,
             order.tokenId,
+            order.paymentToken,
             order.price,
             orderHash
         );
@@ -404,6 +413,7 @@ contract PolarysExchange is
 
             emit AuctionCreated(
                 msg.sender,
+                auction.paymentToken,
                 auction.collection,
                 auction.tokenId,
                 orderHash,
@@ -445,6 +455,7 @@ contract PolarysExchange is
                 _highestBidder(_orderHash),
                 auction.collection,
                 auction.tokenId,
+                auction.paymentToken,
                 _highestBid(_orderHash),
                 _orderHash
             );
@@ -454,6 +465,7 @@ contract PolarysExchange is
                 _highestBidder(_orderHash),
                 auction.collection,
                 auction.tokenId,
+                auction.paymentToken,
                 _highestBid(_orderHash),
                 _orderHash
             );
@@ -563,6 +575,7 @@ contract PolarysExchange is
         emit NewBidPlaced(
             auction.seller,
             msg.sender,
+            auction.paymentToken,
             auction.highestBid,
             auction.collection,
             auction.tokenId,
@@ -656,6 +669,7 @@ contract PolarysExchange is
         emit NewBidPlaced(
             auction.seller,
             msg.sender,
+            auction.paymentToken,
             auction.highestBid,
             auction.collection,
             auction.tokenId,

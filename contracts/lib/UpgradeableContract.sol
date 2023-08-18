@@ -37,6 +37,10 @@ contract UpgradeableContract {
         emit Upgraded(newImplementation);
     }
 
+    function updateAdmin(address newAdmin) public onlyAdmin {
+        _admin = newAdmin;
+    }
+
     fallback() external payable {
         address _impl = _implementation;
         assembly {

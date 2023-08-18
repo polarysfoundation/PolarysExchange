@@ -33,3 +33,6 @@
 /contracts/interfaces/IEvents.sol
 /contracts/interfaces/IOrderSaver.sol
 /contracts/interfaces/IOrderVault.sol
+/SecureFunctionCall.sol
+/OrderSaver
+/OrderVault
