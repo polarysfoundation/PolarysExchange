@@ -1,9 +1,5 @@
-const PolarysExchange = artifacts.require("./contracts/PolarysExchange.sol");
-require("dotenv").config();
-
-
-const arg1 = process.env.ADMIN_ADDRESS;
+var PolarysExchangeV1 = artifacts.require("./contracts/PolarysExchangeV1.sol");
 
 module.exports = function (deployer) {
-  deployer.deploy(PolarysExchange, arg1);
+  deployer.deploy(PolarysExchangeV1);
 };

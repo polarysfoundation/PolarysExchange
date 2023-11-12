@@ -1,0 +1,2020 @@
+{
+	"compiler": {
+		"version": "0.8.21+commit.d9974bed"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "AuctionCanceled",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "highestBidder",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "collection",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "paymentToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "highestBid",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "AuctionCompleted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "paymentToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "collection",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					},
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "highestBidder",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reservedPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "highestBid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct Auction",
+						"name": "auction",
+						"type": "tuple"
+					}
+				],
+				"name": "AuctionCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "bidder",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "paymentToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "highestBid",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "collection",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "NewBidPlaced",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "OrderCanceled",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "paymentToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "collection",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					},
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct Order",
+						"name": "order",
+						"type": "tuple"
+					}
+				],
+				"name": "OrderCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "collection",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "paymentToken",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "OrderFilled",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "implementation",
+						"type": "address"
+					}
+				],
+				"name": "Upgraded",
+				"type": "event"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
+				"inputs": [],
+				"name": "EXCHANGE_NAME",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "TransferHelper",
+				"outputs": [
+					{
+						"internalType": "contract ITransferHelper",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "VERSION",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "highestBidder",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reservedPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "highestBid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Auction",
+						"name": "auction",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_executeAuction",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "highestBidder",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reservedPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "highestBid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Auction",
+						"name": "auction",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_executeBid",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "highestBidder",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reservedPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "highestBid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Auction",
+						"name": "auction",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_executeBidWithERC20",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order",
+						"name": "order",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_executeBuy",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order",
+						"name": "order",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_executeBuyWithERC20",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order",
+						"name": "order",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_executeSellOrCancel",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_expirationTime",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "highestBidder",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reservedPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "highestBid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Auction",
+						"name": "auction",
+						"type": "tuple"
+					}
+				],
+				"name": "_hashAuction",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order",
+						"name": "order",
+						"type": "tuple"
+					}
+				],
+				"name": "_hashOrder",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_highestBid",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_highestBidder",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "_ordersFilled",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "seller",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "_transferFunds",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "admin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "highestBidder",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reservedPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "highestBid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Auction",
+						"name": "auction",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_signature",
+						"type": "bytes"
+					}
+				],
+				"name": "executeAuction",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "highestBidder",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reservedPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "highestBid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Auction",
+						"name": "auction",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_signature",
+						"type": "bytes"
+					}
+				],
+				"name": "executeBid",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "highestBidder",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reservedPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "highestBid",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "startTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Auction",
+						"name": "auction",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_signature",
+						"type": "bytes"
+					}
+				],
+				"name": "executeBidWithERC20",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order",
+						"name": "order",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_signature",
+						"type": "bytes"
+					}
+				],
+				"name": "executeBuy",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order",
+						"name": "order",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderHash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_signature",
+						"type": "bytes"
+					}
+				],
+				"name": "executeBuyWithERC20",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "enum AssetType",
+								"name": "asset",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Action",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "address",
+								"name": "collection",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "paymentToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "seller",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "buyer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expirationTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "tokenAmount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order",
+						"name": "order",
+						"type": "tuple"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_signature",
+						"type": "bytes"
+					}
+				],
+				"name": "executeSellOrCancel",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "feeRate",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "feeRecipient",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "implementation",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "ordersFilled",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newAdmin",
+						"type": "address"
+					}
+				],
+				"name": "updateAdmin",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newAddr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint8",
+						"name": "newRate",
+						"type": "uint8"
+					}
+				],
+				"name": "updateFeeRateAndFeeRecipient",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_transferHelper",
+						"type": "address"
+					}
+				],
+				"name": "updateTransferHelper",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newImplementation",
+						"type": "address"
+					}
+				],
+				"name": "upgrade",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"_executeAuction((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256),bytes32)": {
+					"details": "Execute an auction based on the provided auction details and order hash.",
+					"params": {
+						"auction": "Auction details containing the action type, collection, token ID, and more.",
+						"orderHash": "Hash of the associated order."
+					}
+				},
+				"_executeBid((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256),bytes32)": {
+					"details": "Executes a bid in an auction.",
+					"params": {
+						"auction": "The auction details.",
+						"orderHash": "The unique hash identifying the auction order."
+					}
+				},
+				"_executeBidWithERC20((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256),bytes32)": {
+					"details": "Executes a bid in an ERC20-based auction.",
+					"params": {
+						"auction": "The details of the auction.",
+						"orderHash": "The hash of the auction order. Emits a `NewBidPlaced` event."
+					}
+				},
+				"_executeBuy((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256),bytes32)": {
+					"details": "Execute a purchase order",
+					"params": {
+						"order": "Order details",
+						"orderHash": "Hash of the order"
+					}
+				},
+				"_executeBuyWithERC20((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256),bytes32)": {
+					"details": "Execute a buy order using ERC20 payment. Transfers the asset from seller to buyer, and the specified ERC20 payment token from buyer to seller. Deletes the order and emits an OrderFilled event.",
+					"params": {
+						"order": "The order to execute.",
+						"orderHash": "The hash of the order."
+					}
+				},
+				"_executeSellOrCancel((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256),bytes32)": {
+					"details": "Execute a sell or cancel action for an order.",
+					"params": {
+						"order": "The order containing the action and order details.",
+						"orderHash": "The unique hash representing the order."
+					}
+				},
+				"_expirationTime(bytes32)": {
+					"details": "Get the expiration time for an order.",
+					"params": {
+						"orderHash": "The unique hash of the order."
+					},
+					"returns": {
+						"_0": "The expiration time of the order."
+					}
+				},
+				"_highestBid(bytes32)": {
+					"details": "Returns the highest bid amount for a specific order hash.",
+					"params": {
+						"orderHash": "The unique identifier of the order."
+					},
+					"returns": {
+						"_0": "The highest bid amount for the given order hash."
+					}
+				},
+				"_highestBidder(bytes32)": {
+					"details": "Get the address of the highest bidder for a specific order hash.",
+					"params": {
+						"orderHash": "The hash of the order associated with the auction."
+					},
+					"returns": {
+						"_0": "Address of the highest bidder."
+					}
+				},
+				"executeAuction((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256),bytes)": {
+					"details": "Executes an auction based on the provided auction parameters and signature.",
+					"params": {
+						"_signature": "The signature to verify the authenticity of the auction parameters. if the signature is invalid or the sender is not the owner or token is not approved.",
+						"auction": "The auction parameters including collection, tokenId, and action."
+					}
+				},
+				"executeBid((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256),bytes32,bytes)": {
+					"details": "Execute a bid in an auction.",
+					"params": {
+						"_signature": "Signature for authentication.",
+						"auction": "The auction details.",
+						"orderHash": "Hash of the auction order."
+					}
+				},
+				"executeBidWithERC20((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256),bytes32,bytes)": {
+					"details": "Execute a bid using ERC20 tokens in an auction.This function allows users to place bids in an auction using ERC20 tokens.      It verifies the auction parameters, the signature, and the availability of ERC20 tokens.      If the bid is valid, the auction is executed.",
+					"params": {
+						"_signature": "The signature for order execution.",
+						"auction": "The auction details.",
+						"orderHash": "The hash of the auction order."
+					}
+				},
+				"executeBuy((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256),bytes32,bytes)": {
+					"details": "Execute a buy order.",
+					"params": {
+						"_signature": "Signature for order execution.",
+						"order": "Order details including asset, collection, tokenId, etc.",
+						"orderHash": "Hash of the order for verification."
+					}
+				},
+				"executeBuyWithERC20((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256),bytes32,bytes)": {
+					"details": "Executes a buy order using ERC20 tokens as payment.",
+					"params": {
+						"_signature": "The signature for order execution.",
+						"order": "The buy order details.",
+						"orderHash": "The hash of the buy order."
+					}
+				},
+				"executeSellOrCancel((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256),bytes)": {
+					"details": "Execute a sell order or cancel an existing order.",
+					"params": {
+						"_signature": "Signature for order verification.",
+						"order": "The order to be executed or canceled."
+					}
+				},
+				"updateFeeRateAndFeeRecipient(address,uint8)": {
+					"details": "Update the fee rate and fee recipient address.",
+					"params": {
+						"newAddr": "The new address to receive fees.",
+						"newRate": "The new fee rate as a percentage. Requirements: - Caller must have administrative privileges."
+					}
+				},
+				"updateTransferHelper(address)": {
+					"details": "Updates the address of the Transfer Helper contract.      Only the contract administrator can perform this action.",
+					"params": {
+						"_transferHelper": "The address of the new Transfer Helper contract."
+					}
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"executeBuy((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256),bytes32,bytes)": {
+					"notice": "Requires valid signature and order parameters.Requires the order to be verified against the given order hash.Marks the execution as secure."
+				},
+				"executeBuyWithERC20((uint8,uint8,address,address,address,address,uint256,uint256,uint256,uint256),bytes32,bytes)": {
+					"notice": "Requires a valid payment token, valid signature, and order parameters.Must be called externally and not during a reentrant call."
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/V1/PolarysExchangeV1.sol": "PolarysExchangeV1"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts/security/ReentrancyGuard.sol": {
+			"keccak256": "0xa535a5df777d44e945dd24aa43a11e44b024140fc340ad0dfe42acf4002aade1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://41319e7f621f2dc3733511332c4fd032f8e32ad2aa7fd6f665c19741d9941a34",
+				"dweb:/ipfs/QmcYR3bd862GD1Bc7jwrU9bGxrhUu5na1oP964bDCu2id1"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+			"keccak256": "0x5bce51e11f7d194b79ea59fe00c9e8de9fa2c5530124960f29a24d4c740a3266",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7e66dfde185df46104c11bc89d08fa0760737aa59a2b8546a656473d810a8ea4",
+				"dweb:/ipfs/QmXvyqtXPaPss2PD7eqPoSao5Szm2n6UMoiG8TZZDjmChR"
+			]
+		},
+		"@openzeppelin/contracts/utils/Strings.sol": {
+			"keccak256": "0x3088eb2868e8d13d89d16670b5f8612c4ab9ff8956272837d8e90106c59c14a0",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b81d9ff6559ea5c47fc573e17ece6d9ba5d6839e213e6ebc3b4c5c8fe4199d7f",
+				"dweb:/ipfs/QmPCW1bFisUzJkyjroY3yipwfism9RRCigCcK1hbXtVM8n"
+			]
+		},
+		"@openzeppelin/contracts/utils/cryptography/ECDSA.sol": {
+			"keccak256": "0x809bc3edb4bcbef8263fa616c1b60ee0004b50a8a1bfa164d8f57fd31f520c58",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8b93a1e39a4a19eba1600b92c96f435442db88cac91e315c8291547a2a7bcfe2",
+				"dweb:/ipfs/QmTm34KVe6uZBZwq8dZDNWwPcm24qBJdxqL3rPxBJ4LrMv"
+			]
+		},
+		"@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+			"keccak256": "0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://be161e54f24e5c6fae81a12db1a8ae87bc5ae1b0ddc805d82a1440a68455088f",
+				"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/Math.sol": {
+			"keccak256": "0xe4455ac1eb7fc497bb7402579e7b4d64d928b846fce7d2b6fde06d366f21c2b3",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://cc8841b3cd48ad125e2f46323c8bad3aa0e88e399ec62acb9e57efa7e7c8058c",
+				"dweb:/ipfs/QmSqE4mXHA2BXW58deDbXE8MTcsL5JSKNDbm23sVQxRLPS"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/SafeMath.sol": {
+			"keccak256": "0x58b21219689909c4f8339af00813760337f7e2e7f169a97fe49e2896dcfb3b9a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ef8e012e946dec20e59f2d4446f4b44bb098f3fa8bac103b1b5112fff777447b",
+				"dweb:/ipfs/QmVTooKWcLkJ9W68yNX4MgdrbAKiAXwuRN9A7f4NkdcdtQ"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/SignedMath.sol": {
+			"keccak256": "0xf92515413956f529d95977adc9b0567d583c6203fc31ab1c23824c35187e3ddc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c50fcc459e49a9858b6d8ad5f911295cb7c9ab57567845a250bf0153f84a95c7",
+				"dweb:/ipfs/QmcEW85JRzvDkQggxiBBLVAasXWdkhEysqypj9EaB6H2g6"
+			]
+		},
+		"contracts/V1/IPolarysExchangeV1/IPolarysExchangeV1.sol": {
+			"keccak256": "0x99c8ca03fae835a3cc5755456afa9bdf4b0b94643796e62e36ef31f0d72b424c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0b55663a621ef9bd49095199759c2c2c68b81cee621b4973fa434ceba7947504",
+				"dweb:/ipfs/QmQPQDvC3fpo7ob4jRAFYRVFjtJfyfktCP3tsVYacdP3ZR"
+			]
+		},
+		"contracts/V1/PolarysExchangeV1.sol": {
+			"keccak256": "0xd19a126999b86cf808c1a445f384bc51da581681a76af99f215424217394a61d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f68492f3211018bce08cc3f60ad195a388ef893a92a1b4780c227ecf73d61b1d",
+				"dweb:/ipfs/QmUi58A17s52shU6Kn85ZDkdrU1eydBzkmMHiT5rSz2Pb7"
+			]
+		},
+		"contracts/interfaces/ITransferHelper.sol": {
+			"keccak256": "0x7623d8335136de1630ce57e7cd427920af7c7e055247f2a45a0a868079b74be7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e0e35a80084a2de8df38eb1c9db35b8d6da7ee5d15cdfdc11b210300cda1fa32",
+				"dweb:/ipfs/QmRxj2FDKaKQU2838ZKARSY9zrymWQXTbtnTqtr1dUEnXP"
+			]
+		},
+		"contracts/lib/OrderEncoder.sol": {
+			"keccak256": "0x90daf1584a56c58a25d6a1a48d61c2c7e4046013f6130b59c9bbe8b64c9cb5e1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://84273b5a8c28ee6a4911699961de6f18e77fb5db4d73f2b82923804e58723090",
+				"dweb:/ipfs/QmbfKgRq4JRPzW6wbs6e7QKnMRgRvNxzY4SAZANStn6ZHz"
+			]
+		},
+		"contracts/lib/SignatureVerifier.sol": {
+			"keccak256": "0x68ad926d55dcc4209c518a9f30df2b21f6310c58b3ce462a011a9bd9ab1d0d03",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://808b60406a72e18c62968c553668548e59cd1661d92ded31cd18c88c66e3d222",
+				"dweb:/ipfs/QmUdtGmtc6bHYaejZ5tvop4LLyVUmsmfSKn29bVe9VqxGN"
+			]
+		},
+		"contracts/lib/Structs.sol": {
+			"keccak256": "0xd1106a0e18dd17125246d96ed0be2a9e9d2a4ae85cfe75309fe80d7c53b40543",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c93a4b9f048f2fbf07275d29a8a86a838b972e93908631b80aa5628e5e2e9c7d",
+				"dweb:/ipfs/QmeFNojqkYG6KDgjaRsnc3o6KyES8WhMU1yzddXokWJwHu"
+			]
+		},
+		"contracts/lib/UpgradeableContract.sol": {
+			"keccak256": "0xd943c4a3c6b3e57480f6dce61ffeaac1ee2f3a02da4990532e008ca3dd137c54",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d7565e19507e4da238c2f97fa170e8f278d1602d5212eb3de076041298446961",
+				"dweb:/ipfs/QmU134Z99GFLFdNx63GNX9N6Kcehu1FF2vFzJwPgBfMtzy"
+			]
+		}
+	},
+	"version": 1
+}

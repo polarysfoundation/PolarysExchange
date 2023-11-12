@@ -21,18 +21,18 @@ interface IPolarysExchange {
         bytes calldata _signature
     ) external;
 
-    function executeAuction(
+    function executeAuctionWithSignature(
         Auction calldata auction,
         bytes calldata _signature
     ) external;
 
-    function executeBid(
+    function sendBid(
         Auction calldata auction,
         bytes32 orderHash,
         bytes calldata _signature
     ) external payable;
 
-    function executeBidWithERC20(
+    function sendBidWithERC20(
         Auction calldata auction,
         bytes32 orderHash,
         bytes calldata _signature

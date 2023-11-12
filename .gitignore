@@ -36,3 +36,6 @@
 /SecureFunctionCall.sol
 /OrderSaver
 /OrderVault
+start.bat
+contracts/rescueAuction.sol
+contracts/NewProxy.sol

@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
@@ -21,11 +22,11 @@ contract PolarysExchange is
     using SafeMath for uint256;
 
     /* Store orders and data */
-    mapping(address => mapping(uint256 => bytes32)) private tokenOrder;
-    mapping(bytes32 => bool) private orderFilled;
+    mapping(address => mapping(uint256 => bytes32)) private _tokenOrder;
+    mapping(bytes32 => bool) private _orderFilled;
 
-    mapping(bytes32 => address) private highestBidder;
-    mapping(bytes32 => uint256) private highestBid;
+    mapping(bytes32 => address) private _highestBidder;
+    mapping(bytes32 => uint256) private _highestBid;
     mapping(bytes32 => uint256) private auctionExpirationTime;
 
     /* TransferHelper Address */
@@ -33,7 +34,7 @@ contract PolarysExchange is
     address public feeRecipient; //feeAddress
 
     string public constant EXCHANGE_NAME = "TAGWEB3";
-    string public constant VERSION = "1.0.0";
+    string public constant VERSION = "1.1.0";
 
     bool private safe;
     uint8 public feeRate;
@@ -122,9 +123,9 @@ contract PolarysExchange is
     ) external nonReentrant {
         // Compute the hash of the order for verification
         bytes32 orderHash;
-        if(order.action == Action.SELL){
+        if (order.action == Action.SELL) {
             orderHash = _hashOrder(order);
-        } else if(order.action == Action.CANCEL){
+        } else if (order.action == Action.CANCEL) {
             orderHash = _orderActive(order.collection, order.tokenId);
         }
 
@@ -191,7 +192,7 @@ contract PolarysExchange is
                 order
             );
         } else if (order.action == Action.CANCEL) {
-            delete tokenOrder[order.collection][order.tokenId];
+            delete _tokenOrder[order.collection][order.tokenId];
 
             emit OrderCanceled(orderHash);
         }
@@ -249,8 +250,8 @@ contract PolarysExchange is
 
         _transferFunds(order.seller, order.price);
 
-        delete tokenOrder[order.collection][order.tokenId];
-        orderFilled[orderHash] = true;
+        delete _tokenOrder[order.collection][order.tokenId];
+        _orderFilled[orderHash] = true;
 
         emit OrderFilled(
             order.seller,
@@ -332,7 +333,7 @@ contract PolarysExchange is
         );
 
         // Remove the order from the tokenOrder mapping
-        delete tokenOrder[order.collection][order.tokenId];
+        delete _tokenOrder[order.collection][order.tokenId];
 
         // Emit an OrderFilled event to indicate successful execution
         emit OrderFilled(
@@ -349,8 +350,8 @@ contract PolarysExchange is
         _addFilledOrders();
     }
 
-    function _ordersFilled(bytes32 orderHash) public view returns (bool) {
-        return (orderFilled[orderHash]);
+    function orderFilled(bytes32 orderHash) public view returns (bool) {
+        return (_orderFilled[orderHash]);
     }
 
     /**
@@ -359,13 +360,13 @@ contract PolarysExchange is
      * @param _signature The signature to verify the authenticity of the auction parameters.
      * if the signature is invalid or the sender is not the owner or token is not approved.
      */
-    function executeAuction(
+    function executeAuctionWithSignature(
         Auction calldata auction,
         bytes memory _signature
     ) public nonReentrant {
         // Generate the order hash from the auction parameters
         bytes32 orderHash;
-        if(auction.action == Action.CLAIM){
+        if (auction.action == Action.CLAIM) {
             orderHash = _orderActive(auction.collection, auction.tokenId);
         } else {
             orderHash = _hashAuction(auction);
@@ -383,7 +384,8 @@ contract PolarysExchange is
 
         // Verify that the caller is the owner of the token and it is approved for transfer
         require(
-            _ownerAndApprovalVerify(auction.collection, auction.tokenId) || msg.sender == _highestBidder(orderHash),
+            _ownerAndApprovalVerify(auction.collection, auction.tokenId) ||
+                msg.sender == highestBidder(orderHash),
             "Polarys Exchange: You are not the owner or token not approved"
         );
 
@@ -425,78 +427,82 @@ contract PolarysExchange is
                 auction.tokenId
             );
             require(
-                _verifyAuction(auction.expirationTime, orderHash, auction.collection, auction.tokenId),
+                _verifyAuction(
+                    auction.expirationTime,
+                    orderHash,
+                    auction.collection,
+                    auction.tokenId
+                ),
                 "Polarys Exchange: Auction has not ended or invalid caller"
             );
+
+            address bidder = highestBidder(_orderHash);
+            uint256 bid = highestBid(_orderHash);
 
             _transferAssets(
                 auction.asset,
                 auction.collection,
                 auction.seller,
-                _highestBidder(_orderHash),
+                bidder,
                 auction.tokenId,
                 auction.tokenAmount
             );
 
-            _transferBack(
-                auction.paymentToken,
-                auction.seller,
-                _highestBid(_orderHash)
-            );
+            _transferBack(auction.paymentToken, auction.seller, bid);
 
-            delete tokenOrder[auction.collection][auction.tokenId];
-            delete highestBidder[_orderHash];
-            delete highestBid[_orderHash];
-            delete auctionExpirationTime[_orderHash];
-            orderFilled[_orderHash] = true;
+            _orderFilled[_orderHash] = true;
 
             emit AuctionCompleted(
                 auction.seller,
-                _highestBidder(_orderHash),
+                bidder,
                 auction.collection,
                 auction.tokenId,
                 auction.paymentToken,
-                _highestBid(_orderHash),
+                bid,
                 _orderHash
             );
 
             emit OrderFilled(
                 auction.seller,
-                _highestBidder(_orderHash),
+                bidder,
                 auction.collection,
                 auction.tokenId,
                 auction.paymentToken,
-                _highestBid(_orderHash),
+                bid,
                 _orderHash
             );
 
+            delete _tokenOrder[auction.collection][auction.tokenId];
+            delete _highestBidder[_orderHash];
+            delete _highestBid[_orderHash];
+            delete auctionExpirationTime[_orderHash];
             _addFilledOrders();
-        } else {
+        } else if (auction.action == Action.CANCEL) {
             bytes32 _orderHash = _orderActive(
                 auction.collection,
                 auction.tokenId
             );
             require(
-                _highestBidder(_orderHash) == address(0) &&
-                    _highestBid(_orderHash) == 0,
+                highestBidder(_orderHash) == address(0) &&
+                    highestBid(_orderHash) == 0,
                 "Polarys Exchange: Auction has started"
             );
 
-            delete tokenOrder[auction.collection][auction.tokenId];
+            delete _tokenOrder[auction.collection][auction.tokenId];
 
-            emit AuctionCanceled(orderHash);
+            emit AuctionCanceled(_orderHash);
         }
     }
 
     function _verifyAuction(
-        uint256 expirationTime,
+        uint256 _expirationTime,
         bytes32 orderHash,
-        address collection, 
+        address collection,
         uint256 tokenId
     ) private view returns (bool) {
-        return (expirationTime < block.timestamp
-        && msg.sender == _highestBidder(orderHash) || 
-        _validateOwnership(collection, tokenId));
+        return ((_expirationTime < block.timestamp &&
+            msg.sender == highestBidder(orderHash)) ||
+            _validateOwnership(collection, tokenId));
     }
 
     /**
@@ -505,7 +511,7 @@ contract PolarysExchange is
      * @param orderHash Hash of the auction order.
      * @param _signature Signature for authentication.
      */
-    function executeBid(
+    function sendBid(
         Auction calldata auction,
         bytes32 orderHash,
         bytes memory _signature
@@ -526,8 +532,11 @@ contract PolarysExchange is
             "Polarys Exchange: Invalid auction parameters"
         );
 
-        if(_highestBidder(orderHash) != address(0)){
-            require(_expirationTime(orderHash) > block.timestamp, "Polarys Exchange: Auction expired");
+        if (highestBidder(orderHash) != address(0)) {
+            require(
+                expirationTime(orderHash) > block.timestamp,
+                "Polarys Exchange: Auction expired"
+            );
         }
 
         // Mark the execution as safe.
@@ -547,12 +556,12 @@ contract PolarysExchange is
         bytes32 orderHash
     ) public payable isSecure {
         if (
-            _highestBidder(orderHash) != address(0) &&
-            _highestBid(orderHash) != 0
+            highestBidder(orderHash) != address(0) &&
+            highestBid(orderHash) != 0
         ) {
             // Existing bid present
-            address previousBidder = _highestBidder(orderHash);
-            uint256 previousBid = _highestBid(orderHash);
+            address previousBidder = highestBidder(orderHash);
+            uint256 previousBid = highestBid(orderHash);
             uint256 requiredBid = previousBid.mul(2).div(100);
             require(
                 msg.value > requiredBid && auction.highestBid > requiredBid,
@@ -561,14 +570,14 @@ contract PolarysExchange is
             safeSendETH(previousBidder, previousBid);
 
             // Update bid information
-            highestBidder[orderHash] = msg.sender;
-            highestBid[orderHash] = msg.value;
+            _highestBidder[orderHash] = msg.sender;
+            _highestBid[orderHash] = msg.value;
         } else {
             // New bid with no existing bids
             auctionExpirationTime[orderHash] = _calculateAuctionEndTime();
-            //auctionExpirationTime[orderHash] = block.timestamp + 480; // Test 
-            highestBidder[orderHash] = msg.sender;
-            highestBid[orderHash] = msg.value;
+            //auctionExpirationTime[orderHash] = block.timestamp + 480; // Test
+            _highestBidder[orderHash] = msg.sender;
+            _highestBid[orderHash] = msg.value;
         }
 
         // Emit bid event
@@ -592,7 +601,7 @@ contract PolarysExchange is
      *      It verifies the auction parameters, the signature, and the availability of ERC20 tokens.
      *      If the bid is valid, the auction is executed.
      */
-    function executeBidWithERC20(
+    function sendBidWithERC20(
         Auction calldata auction,
         bytes32 orderHash,
         bytes memory _signature
@@ -614,8 +623,11 @@ contract PolarysExchange is
             "Polarys Exchange: Order canceled or filled"
         );
 
-        if(_highestBidder(orderHash) != address(0)){
-            require(_expirationTime(orderHash) > block.timestamp, "Polarys Exchange: Auction expired");
+        if (highestBidder(orderHash) != address(0)) {
+            require(
+                expirationTime(orderHash) > block.timestamp,
+                "Polarys Exchange: Auction expired"
+            );
         }
 
         safe = true;
@@ -634,25 +646,34 @@ contract PolarysExchange is
         bytes32 orderHash
     ) public isSecure {
         if (
-            _highestBidder(orderHash) != address(0) &&
-            _highestBid(orderHash) != 0 // New update: check if auction not has started
+            highestBidder(orderHash) != address(0) &&
+            highestBid(orderHash) != 0 // New update: check if auction not has started
         ) {
-            address previousBidder = _highestBidder(orderHash);
-            uint256 previousBid = _highestBid(orderHash);
+            address previousBidder = highestBidder(orderHash);
+            uint256 previousBid = highestBid(orderHash);
             uint256 requiredBid = previousBid.mul(2).div(100);
             require(
                 auction.highestBid > requiredBid,
                 "Polarys Exchange: Minimum required 2% more than current Bid"
             );
 
-            TransferHelper.executeERC20TransferBack(
+            executeERC20TransferBack(
                 auction.paymentToken,
                 previousBidder,
                 previousBid
             );
 
-            highestBidder[orderHash] = msg.sender;
-            highestBid[orderHash] = auction.highestBid;
+            // New Update: fix erc20 transfer, send new amount in erc20
+            // apply method of erc20 transferback
+            TransferHelper.executeERC20Transfer(
+                auction.paymentToken,
+                msg.sender,
+                address(this),
+                auction.highestBid
+            );
+
+            _highestBidder[orderHash] = msg.sender;
+            _highestBid[orderHash] = auction.highestBid;
         } else {
             // New Update: avoid recalculating end time
             TransferHelper.executeERC20Transfer(
@@ -662,8 +683,8 @@ contract PolarysExchange is
                 auction.highestBid
             );
             auctionExpirationTime[orderHash] = _calculateAuctionEndTime();
-            highestBidder[orderHash] = msg.sender;
-            highestBid[orderHash] = auction.highestBid;
+            _highestBidder[orderHash] = msg.sender;
+            _highestBid[orderHash] = auction.highestBid;
         }
 
         emit NewBidPlaced(
@@ -682,8 +703,8 @@ contract PolarysExchange is
      * @param orderHash The hash of the order associated with the auction.
      * @return Address of the highest bidder.
      */
-    function _highestBidder(bytes32 orderHash) public view returns (address) {
-        return highestBidder[orderHash];
+    function highestBidder(bytes32 orderHash) public view returns (address) {
+        return _highestBidder[orderHash];
     }
 
     function _storeData(
@@ -691,7 +712,7 @@ contract PolarysExchange is
         uint256 tokenId,
         bytes32 orderHash
     ) private isSecure {
-        tokenOrder[collection][tokenId] = orderHash;
+        _tokenOrder[collection][tokenId] = orderHash;
     }
 
     /**
@@ -699,32 +720,32 @@ contract PolarysExchange is
      * @param orderHash The unique identifier of the order.
      * @return The highest bid amount for the given order hash.
      */
-    function _highestBid(bytes32 orderHash) public view returns (uint256) {
-        return highestBid[orderHash];
+    function highestBid(bytes32 orderHash) public view returns (uint256) {
+        return _highestBid[orderHash];
     }
 
     function _transferBack(
         address paymentToken,
         address to,
         uint256 amount
-    ) internal {
+    ) private  {
         uint256 feeAmount = amount.mul(feeRate).div(100);
 
         if (paymentToken != address(0)) {
-            TransferHelper.executeERC20TransferBack(
-                paymentToken,
-                to,
-                amount.sub(feeAmount)
-            );
-            TransferHelper.executeERC20TransferBack(
-                paymentToken,
-                feeRecipient,
-                feeAmount
-            );
+            executeERC20TransferBack(paymentToken, to, amount.sub(feeAmount));
+            executeERC20TransferBack(paymentToken, feeRecipient, feeAmount);
         } else {
             safeSendETH(to, amount.sub(feeAmount));
             safeSendETH(feeRecipient, feeAmount);
         }
+    }
+
+    function executeERC20TransferBack(
+        address _tokenAddress,
+        address _to,
+        uint256 _amount
+    ) private {
+        IERC20(_tokenAddress).transfer(_to, _amount);
     }
 
     /**
@@ -732,14 +753,14 @@ contract PolarysExchange is
      * @param orderHash The unique hash of the order.
      * @return The expiration time of the order.
      */
-    function _expirationTime(bytes32 orderHash) public view returns (uint256) {
+    function expirationTime(bytes32 orderHash) public view returns (uint256) {
         return auctionExpirationTime[orderHash];
     }
 
     function _verifyOrdersByTokenId(
         Order calldata order,
         bytes32 orderHash
-    ) internal view returns (bool) {
+    ) private view returns (bool) {
         return (order.seller != address(0) &&
             order.seller != order.buyer &&
             order.expirationTime > block.timestamp &&
@@ -752,7 +773,7 @@ contract PolarysExchange is
         address collection,
         uint256 tokenId
     ) private view returns (bytes32) {
-        return (tokenOrder[collection][tokenId]);
+        return (_tokenOrder[collection][tokenId]);
     }
 
     function _transferFunds(address seller, uint256 amount) public payable {
@@ -769,7 +790,7 @@ contract PolarysExchange is
         address from,
         address to,
         uint256 amount
-    ) internal {
+    ) private {
         uint256 feeAmount = amount.mul(feeRate).div(100);
         TransferHelper.executeERC20Transfer(
             paymentToken,
@@ -795,7 +816,7 @@ contract PolarysExchange is
         address buyer,
         uint256 tokenId,
         uint256 tokenAmount
-    ) internal {
+    ) private {
         if (asset == AssetType.ERC721) {
             TransferHelper.executeERC721Transfer(
                 collection,
@@ -817,18 +838,20 @@ contract PolarysExchange is
     function _verifyAuctionsByTokenId(
         Auction memory auction,
         bytes32 orderHash
-    ) internal view returns (bool) {
+    ) private view returns (bool) {
         return (
             //Check if the owner not is zero address
             (auction.seller != address(0) &&
-            //seller can't place a bid
-            auction.seller != auction.highestBidder &&
-            //Check if the auction is correct
-            orderHash == _orderActive(auction.collection, auction.tokenId) &&
-            //check if no change the time expiration
-            auction.expirationTime == _expirationTime(orderHash) &&
-            //check twice if bidder not is the owner
-            !_validateOwnership(auction.collection, auction.tokenId)));
+                //seller can't place a bid
+                auction.seller != auction.highestBidder &&
+                //Check if the auction is correct
+                orderHash ==
+                _orderActive(auction.collection, auction.tokenId) &&
+                //check if no change the time expiration
+                auction.expirationTime == expirationTime(orderHash) &&
+                //check twice if bidder not is the owner
+                !_validateOwnership(auction.collection, auction.tokenId))
+        );
     }
 
     function safeSendETH(address recipient, uint256 amount) private {
@@ -841,7 +864,7 @@ contract PolarysExchange is
         require(success, "Polarys Exchange: Failed to send ETH");
     }
 
-    function _calculateAuctionEndTime() internal view returns (uint256) {
+    function _calculateAuctionEndTime() private view returns (uint256) {
         uint256 currentTime = block.timestamp;
         uint256 endTime = currentTime + 86400; // 86400 seconds in 24 hours
         return endTime;
@@ -850,7 +873,7 @@ contract PolarysExchange is
     function _validateOwnership(
         address collection_,
         uint256 tokenId_
-    ) internal view returns (bool) {
+    ) private view returns (bool) {
         return IERC721(collection_).ownerOf(tokenId_) == msg.sender;
     }
 
@@ -881,4 +904,5 @@ contract PolarysExchange is
         return (collection.getApproved(_tokenId) == address(TransferHelper) ||
             collection.isApprovedForAll(msg.sender, address(TransferHelper)));
     }
+
 }
