@@ -39,3 +39,4 @@
 start.bat
 contracts/rescueAuction.sol
 contracts/NewProxy.sol
+contracts/V1/artifacts
